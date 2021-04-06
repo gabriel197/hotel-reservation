@@ -4,16 +4,16 @@ import model.Customer;
 import model.IRoom;
 import model.Reservation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
-public class ReservationService {
+public class ReservationService extends model.Reservation{
+
     // Store a list of rooms in a collection
-    ArrayList<IRoom> roomList = new ArrayList<>();
+    static ArrayList<IRoom> roomList = new ArrayList<>();
 
     // Store rooms with their checkin and out dates
-    ArrayList<Reservation> reservations = new ArrayList<>();
+    static ArrayList<Reservation> reservations = new ArrayList<>();
+    
     public void addRoom(IRoom room){
         roomList.add(room);
     }
@@ -32,12 +32,40 @@ public class ReservationService {
 
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
         Reservation reserv = new Reservation(customer, room, checkInDate, checkOutDate);
+        roomList.remove(room);
         reservations.add(reserv);
         return reserv;
     }
 
-    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
+    // Find rooms that are not reserved
+    public static Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
 
+        // Store available rooms in array and return it as Collection<IRoom>
+        ArrayList<IRoom> availableRooms = new ArrayList<>(roomList);
 
+        // Add rooms that are not reserved to @availableRooms
+        for (Reservation reserved :
+                reservations) {
+            if (checkInDate.before(reserved.getCheckInDate()) && checkOutDate.before(reserved.getCheckInDate()) ||
+            checkInDate.after(reserved.getCheckOutDate()) &&  checkOutDate.after(checkInDate)) {
+                availableRooms.add(reserved.getRoom());
+            }
+        }
+        return availableRooms;
+    }
+
+    public Collection<Reservation> getCustomersReservation(Customer customer){
+        Set<Reservation> customersReservation = new HashSet<>();
+        // TODO: compare customer and override hashcode
+        for (Reservation reserved :
+                reservations) {
+            if(reserved.getCustomer().equals(customer)) customersReservation.add(reserved);
+        }
+        return customersReservation;
+    }
+
+    public void printAllReservations(){
+        Iterator<Reservation> iterator = reservations.iterator();
+        while (iterator.hasNext()) System.out.println(iterator.next());
     }
 }

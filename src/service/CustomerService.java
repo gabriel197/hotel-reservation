@@ -21,6 +21,7 @@ public class CustomerService {
                 customers) {
             if (person.getEmail().equals(customerEmail)) customer = person;
         }
+        System.out.println("Customer not found.");
         return customer;
     }
 

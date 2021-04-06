@@ -36,6 +36,19 @@ public class Customer {
         return "Customer info: First Name: " + firstName + "  Last Name: " + lastName + "  Email: " + email;
     }
 
+    // Generate custom hashcode for different class objects
+    @Override
+    public int hashCode() {
+       return firstName.hashCode() * email.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (getClass() != obj.getClass()) return false;
+        Customer customer = (Customer) obj;
+        return customer.hashCode() == this.hashCode();
+    }
+
     public String getFirstName() {
         return firstName;
     }
