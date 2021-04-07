@@ -3,7 +3,7 @@ package model;
 // A free room with price = 0;
 public class FreeRoom extends Room{
 
-    FreeRoom(String roomNumber, RoomType roomType) {
+    public FreeRoom(String roomNumber, RoomType roomType) {
         super(roomNumber, 0d, roomType);
     }
 
@@ -16,4 +16,5 @@ public class FreeRoom extends Room{
     public boolean isFree() {
         return true;
     }
+
 }

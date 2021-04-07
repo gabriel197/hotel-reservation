@@ -9,27 +9,30 @@ public class Customer {
     private String email;
 
     // Email pattern
-    String regEx = "^(.+)@(.+).(.+)$";
+    private static final String regEx = "^(.+)@(.+).(.+)$";
 
     // Compile the pattern
-    Pattern pattern = Pattern.compile(regEx);
-
-    public Customer(){}
+    private static final Pattern pattern = Pattern.compile(regEx);
 
     // Create new Customer
-    public Customer(String firstName, String lastName, String email) {
+    public Customer(String firstName, String lastName, String email) throws IllegalArgumentException {
+
         this.firstName = firstName;
         this.lastName = lastName;
-        if (validEmail(email))
-        this.email = email;
+            if (pattern.matcher(email).matches()) this.email = email;
+            else throw new IllegalArgumentException("Invalid email format, account creation failed.");
     }
 
     // Check if email have the correct pattern
-    boolean validEmail(String email) {
-        boolean isMatching = pattern.matcher(email).matches();
-        if (!isMatching) throw new IllegalArgumentException("Invalid email format.");
-        else return true;
-    }
+//     public static boolean checkEmail(String email) {
+//        boolean isMatching = pattern.matcher(email).matches();
+//        try {
+//            if (!isMatching) throw new IllegalArgumentException("Invalid email format.");
+//        } catch (IllegalArgumentException ex) {
+//            System.out.println(ex.getLocalizedMessage());
+//        }
+//        return isMatching;
+//    }
 
     @Override
     public String toString() {

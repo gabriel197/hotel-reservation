@@ -1,31 +1,42 @@
 package service;
 
+import exceptions.CustomerNotFoundException;
 import model.Customer;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 
 public class CustomerService {
 
     // Store the customers in a collection
-    public static ArrayList<Customer> customers = new ArrayList<>();
+    static Map<String, Customer> customerMap = new HashMap<>();
+
+
 
     public static void addCustomer(String email, String firstName, String lastName){
-        customers.add(new Customer(firstName, lastName, email));
+        try {
+            customerMap.put(email, new Customer(firstName, lastName, email));
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+//        System.out.println(customerMap.containsKey(email));
     }
 
     public static Customer getCustomer(String customerEmail){
-        Customer customer = null;
-        for (Customer person :
-                customers) {
-            if (person.getEmail().equals(customerEmail)) customer = person;
+        try {
+            if (!customerMap.containsKey(customerEmail)) throw new CustomerNotFoundException("Customer not found.");
+        } catch (CustomerNotFoundException ex) {
+            System.out.println(ex.getMessage());
         }
-        System.out.println("Customer not found.");
-        return customer;
+        return customerMap.get(customerEmail);
     }
 
+
     public  static Collection<Customer> getAllCustomers(){
-        return customers;
-    };
+        return customerMap.values();
+    }
+
+//    public static boolean validEmail(String email) {
+//        return Customer.checkEmail(email);
+//    }
 }

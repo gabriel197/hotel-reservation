@@ -17,6 +17,8 @@ public class Room implements IRoom{
 //        enumeration = roomType;
 //    }
 
+
+
     @Override
     public String toString() {
         return "Room number: " + roomNumber + "  Price: " + price + "€" + "  Room type: " + enumeration;
@@ -39,6 +41,30 @@ public class Room implements IRoom{
 
     @Override
     public boolean isFree() {
+        System.out.println("doing somethig");
         return false;
     }
+
+    @Override
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    @Override
+    public void setPrice(Double price) {
+this.price = price;
+    }
+
+    @Override
+    public void setEnumeration(RoomType enumeration) {
+this.enumeration = enumeration;
+    }
+
+    // Method used to sort rooms in asccending order
+    @Override
+    public int compareTo(IRoom o) {
+        return roomNumber.compareTo(o.getRoomNumber());
+    }
+
+
 }
