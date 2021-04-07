@@ -41,24 +41,9 @@ public class Room implements IRoom{
 
     @Override
     public boolean isFree() {
-        System.out.println("doing somethig");
         return false;
     }
 
-    @Override
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    @Override
-    public void setPrice(Double price) {
-this.price = price;
-    }
-
-    @Override
-    public void setEnumeration(RoomType enumeration) {
-this.enumeration = enumeration;
-    }
 
     // Method used to sort rooms in asccending order
     @Override

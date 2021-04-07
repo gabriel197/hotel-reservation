@@ -1,6 +1,7 @@
 package ui;
 
 import api.AdminResource;
+import api.HotelResource;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -71,11 +72,18 @@ public class AdminMenu {
                         //TODO: add proper check for misspelling
                         System.out.println("Would you like to add another room? (Y/N)");
                         scannedToken = scanner.next().toLowerCase(Locale.ROOT);
-                        if (scannedToken.equals("n")) start();
-                        System.out.println("Recursive metod !!!!!!!!!  !!!!!");
+                        if (scannedToken.equals("n")) {
+                            AdminResource.addRoom(rooms);
+                            start();
+                        }
                     }
-//                    AdminResource.addRoom(rooms);
-//                    case 5;
+//TODO: Add dummy data
+//                case "5":
+//                    AdminResource.a
+                case "6": MainMenu.start();
+                default:
+                    System.out.println("Please select one option from the list.");
+                    start();
                     }
             }
 

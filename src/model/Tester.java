@@ -71,6 +71,9 @@ public class Tester {
 //            System.out.println(exception.getLocalizedMessage());
 //        } return 5;
         MainMenu.start();
+//        IRoom rom = new Room("a", 2d, RoomType.SINGLE);
+//        System.out.println(rom.getClass());
+//        System.out.println(FreeRoom.class);
         }
 
 

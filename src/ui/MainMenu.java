@@ -25,7 +25,7 @@ public class MainMenu {
 
         try(Scanner scanner = new Scanner(System.in)) {
             String scannedToken = scanner.next();
-            String first, last, email = null, roomNumber;
+            String first, last, email, roomNumber;
             switch (scannedToken) {
                 case "1":
                     System.out.println("Do you have an account with us? (Y/N)");
@@ -35,10 +35,12 @@ public class MainMenu {
                     scannedToken = scanner.next().toLowerCase(Locale.ROOT);
                     }
                     if(scannedToken.equals("y")) {
+
                         System.out.println("Please enter your email:");
 
+                        email = scanner.next();
                         // If no email found, create a customer account
-                         if(HotelResource.getCustomer(scanner.next())== null) {
+                         if(HotelResource.getCustomer(email)== null) {
                              System.out.println("Would you like to create an account in order to make a reservation? (Y/N)");
                              scannedToken = scanner.next().toLowerCase(Locale.ROOT);
                              switch (scannedToken) {
@@ -82,8 +84,21 @@ public class MainMenu {
                                      System.out.println("Invalid date format");
                                  }
                              }
+                             System.out.println("Search for paid or free rooms? (P/F)");
+                             scannedToken = scanner.next().toLowerCase(Locale.ROOT);
+                             while (!(scannedToken.equals("p") || scannedToken.equals("f"))) {
+                                 System.out.println("Enter 'P' for paid or 'F' for free rooms.");
+                                 scannedToken = scanner.next().toLowerCase(Locale.ROOT);
+                             }
+                             boolean freeRooms;
+                             switch (scannedToken) {
+                                 case "p" -> freeRooms = false;
+                                 case "f" -> freeRooms = true;
+                                 // Suppress 'freeRoms might not been initialized' compiler error
+                                 default -> freeRooms = false;
+                             }
 
-                             availableRooms = HotelResource.findARoom(dateIn, dateOut);
+                             availableRooms = HotelResource.findARoom(dateIn, dateOut, freeRooms);
                              for (IRoom room : availableRooms) {
                                  System.out.println(room);
                              }
@@ -93,6 +108,7 @@ public class MainMenu {
                                  case "y":
                                      System.out.println("What room number you will like to reserve?");
                                      roomNumber = scanner.next();
+                                     if(HotelResource.getRoom(roomNumber) != null)
                                      System.out.println(HotelResource.bookARoom(email, HotelResource.getRoom(roomNumber), dateIn, dateOut));
                                      start();
                                  case "n":
@@ -126,11 +142,10 @@ public class MainMenu {
                     AdminMenu.start();
                     break;
                 case "5": scanner.close();
+                default:
+                    System.out.println("Please select one option from the list.");
+                    start();
             }
         }
-    }
-
-    static void reserveRoom_1() {
-        System.out.println();
     }
 }

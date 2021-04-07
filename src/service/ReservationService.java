@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.RoomNotFoundException;
 import model.*;
 
 import java.util.*;
@@ -58,15 +59,15 @@ public class ReservationService {
                 roomList) {
             try {
                 if (room.getRoomNumber().equals(roomNumber)) return room;
-                else throw new ClassNotFoundException("Room not found");
-            } catch (ClassNotFoundException ex) {
+                else throw new RoomNotFoundException("Room non-existent.");
+            } catch (RoomNotFoundException ex) {
                 System.out.println(ex.getLocalizedMessage());
             }
         }
         return null;
     }
 
-    public static Room createARoom(String roomNumber, String roomPrice, RoomType roomType) throws NumberFormatException {
+    public static IRoom createARoom(String roomNumber, String roomPrice, RoomType roomType) throws NumberFormatException {
 
         double doublePrice = Double.parseDouble(roomPrice);
 
@@ -81,33 +82,49 @@ public class ReservationService {
         return reservedRoom;
     }
 
-    // Find rooms that are not reserved
-    public static Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
+    // Find rooms that are not reserved & show only paid || only free rooms list
+    public static Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate, boolean searchFreeRooms) {
+        Set<IRoom> freeRooms = new HashSet<>();
 
         // Store in set so it not allow duplicates
-        ArrayList<IRoom> availableRooms = new ArrayList<>(roomList);
+        Set<IRoom> availableRooms = new HashSet<>(roomList);
 
         // Add rooms that are not reserved to @availableRooms
         for (Reservation reserved :
                 reservations) {
             // In/Out dates of @reserved represented by 1 respective 2
-            // If in/out dates are between 1&2 || in before 1 & out after 1 || in before 2 & out after 2 ...
+            // If in/out dates are between 1&2 || in before 1 & out after 1 || in before 2 & out after 2 ||
+            // in equals 1 & out equals 2...
             if (checkInDate.after(reserved.getCheckInDate()) && checkOutDate.before(reserved.getCheckOutDate()) ||
             checkInDate.before(reserved.getCheckInDate()) &&  checkOutDate.after(reserved.getCheckInDate()) ||
-            checkInDate.before(reserved.getCheckOutDate()) && checkOutDate.after(reserved.getCheckOutDate())) {
+            checkInDate.before(reserved.getCheckOutDate()) && checkOutDate.after(reserved.getCheckOutDate()) ||
+            checkInDate.equals(reserved.getCheckInDate()) && checkOutDate.equals(reserved.getCheckOutDate())) {
                 // ... remove room because is reserved ...
                 availableRooms.remove(reserved.getRoom());
                 // ...otherwise add it.
             } else availableRooms.add(reserved.getRoom());
         }
+        if(searchFreeRooms) {
+            // Check Collection for FreeRoom classes & add them
+            for (IRoom room : availableRooms) {
+                if(room.isFree()) {
+                    freeRooms.add(room);
+                }
+            }
+            availableRooms.clear();
+            availableRooms.addAll(freeRooms);
+        } else {
+            availableRooms.removeIf(room -> room.getClass().equals(FreeRoom.class));
+        }
+        
         // TODO: Might not be needed
-        Collections.sort(availableRooms);
+//        Collections.sort(availableRooms);
         return availableRooms;
     }
 
     // Return the rooms reserved by a customer
     public static Collection<Reservation> getCustomersReservation(Customer customer){
-        Set<Reservation> customersReservation = new HashSet<>();
+        ArrayList<Reservation> customersReservation = new ArrayList<>();
         for (Reservation reserved :
                 reservations) {
             if(reserved.getCustomer().equals(customer)) customersReservation.add(reserved);

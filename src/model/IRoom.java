@@ -10,8 +10,5 @@ public interface IRoom extends Comparable<IRoom> {
      RoomType getRoomType();
      boolean isFree();
 
-     void setRoomNumber(String roomNumber);
-     void setPrice(Double price);
-     void setEnumeration(RoomType enumeration);
 }
 

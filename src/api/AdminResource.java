@@ -14,7 +14,7 @@ public class AdminResource {
         return CustomerService.getCustomer(email);
     }
 
-    public static Room createRoom(String roomNumber, String price, RoomType roomType) throws NumberFormatException{
+    public static IRoom createRoom(String roomNumber, String price, RoomType roomType) throws NumberFormatException{
         return ReservationService.createARoom(roomNumber, price, roomType);
     }
     public static void addRoom(List<IRoom> rooms){
