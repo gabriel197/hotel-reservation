@@ -1,5 +1,6 @@
 package api;
 
+import exceptions.RoomNotFoundException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -18,8 +19,8 @@ public class HotelResource {
         CustomerService.addCustomer(email, firstName, lastName);
     }
 
-    public static IRoom getRoom(String roomNumber){
-        return ReservationService.getRoom(roomNumber);
+    public static IRoom getRoom(String roomNumber) {
+        return ReservationService.getARoom(roomNumber);
     }
 
     public static Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){

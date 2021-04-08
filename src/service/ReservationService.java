@@ -8,13 +8,10 @@ import java.util.*;
 public class ReservationService {
 
     // Store a list of rooms in a collection
-    static List<IRoom> roomList = new ArrayList<>();
+    private static List<IRoom> roomList = new ArrayList<>();
 
-//    public static HashMap<String, Reservation> bookedRooms = new HashMap<>();
-
-
-    // Store rooms with their checkin and out dates
-    public static ArrayList<Reservation> reservations = new ArrayList<>();
+    // Store rooms with their checkIn and out dates
+    private static ArrayList<Reservation> reservations = new ArrayList<>();
     
     public static void addRoom(IRoom room){
         roomList.add(room);
@@ -22,50 +19,25 @@ public class ReservationService {
     }
 
     // Get a room from Collections
-    public IRoom getARoom(String roomId){
-        // TODO: fix this
-        List<IRoom> allRooms = new ArrayList<>(roomList);
-        for (Reservation reservedRoom :
-                reservations) {
-            allRooms.add(reservedRoom.getRoom());
+    public static IRoom getARoom(String roomId) {
+        for (IRoom room : roomList) {
+                if (room.getRoomNumber().equals(roomId)) return room;
         }
-        // Sort by room number in ascending order
-        Collections.sort(allRooms);
-
-        // Store the index of required room
-        int id = -1;
-        try {
-             id = Integer.parseInt(roomId);
-        } catch (NumberFormatException ex) {
-            ex.getLocalizedMessage();
-        }
-        return allRooms.get(id);
+        System.out.println("Room non-existent.");
+        return null;
     }
 
     public static Collection<IRoom> getAllRooms() {
-        List<IRoom> allRooms = new ArrayList<>(roomList);
-        for (Reservation reservedRoom :
-                reservations) {
-            allRooms.add(reservedRoom.getRoom());
-        }
-        // Sort by room number in ascending order
-        Collections.sort(allRooms);
-        return allRooms;
+//        List<IRoom> allRooms = new ArrayList<>(roomList);
+//        for (Reservation reservedRoom :
+//                reservations) {
+//            allRooms.add(reservedRoom.getRoom());
+//        }
+//        // Sort by room number in ascending order
+        Collections.sort(roomList);
+        return roomList;
     }
 
-
-    public static IRoom getRoom(String roomNumber) {
-        for (IRoom room :
-                roomList) {
-            try {
-                if (room.getRoomNumber().equals(roomNumber)) return room;
-                else throw new RoomNotFoundException("Room non-existent.");
-            } catch (RoomNotFoundException ex) {
-                System.out.println(ex.getLocalizedMessage());
-            }
-        }
-        return null;
-    }
 
     public static IRoom createARoom(String roomNumber, String roomPrice, RoomType roomType) throws NumberFormatException {
 
@@ -105,7 +77,7 @@ public class ReservationService {
             } else availableRooms.add(reserved.getRoom());
         }
         if(searchFreeRooms) {
-            // Check Collection for FreeRoom classes & add them
+            // Return either free rooms...
             for (IRoom room : availableRooms) {
                 if(room.isFree()) {
                     freeRooms.add(room);
@@ -114,12 +86,13 @@ public class ReservationService {
             availableRooms.clear();
             availableRooms.addAll(freeRooms);
         } else {
+            //...or paid roms.
             availableRooms.removeIf(room -> room.getClass().equals(FreeRoom.class));
         }
-        
-        // TODO: Might not be needed
-//        Collections.sort(availableRooms);
-        return availableRooms;
+
+        List<IRoom> sortableList = new ArrayList<>(availableRooms);
+        Collections.sort(sortableList);
+        return sortableList;
     }
 
     public static Collection<IRoom> searchXDaysAfter(int daysAhead, Date checkInDate, Date checkOutDate, boolean searchFreeRooms) {
@@ -148,5 +121,13 @@ public class ReservationService {
     public static void printAllReservations(){
         Iterator<Reservation> iterator = reservations.iterator();
         while (iterator.hasNext()) System.out.println(iterator.next());
+    }
+
+    // Return appropriate description for bed
+    public static String bedsNumber(RoomType bed) {
+        return switch (bed) {
+            case DOUBLE -> "Double bed";
+            case SINGLE -> "Single bed";
+        };
     }
 }

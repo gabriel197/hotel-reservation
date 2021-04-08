@@ -1,5 +1,7 @@
 package model;
 
+import service.ReservationService;
+
 // A free room with price = 0;
 public class FreeRoom extends Room{
 
@@ -9,7 +11,7 @@ public class FreeRoom extends Room{
 
     @Override
     public String toString() {
-        return "Free Room: " + " Price: " + price + "€" + "  Room type: " + enumeration;
+        return "Free Room - " + "Number: " + roomNumber + " Price: " + price + "€" + "  Room type: " + ReservationService.bedsNumber(enumeration);
     }
 
     @Override
@@ -17,4 +19,8 @@ public class FreeRoom extends Room{
         return true;
     }
 
+    @Override
+    public int compareTo(IRoom o) {
+        return super.compareTo(o);
+    }
 }

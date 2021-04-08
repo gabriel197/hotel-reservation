@@ -2,17 +2,13 @@ package ui;
 
 import api.AdminResource;
 import api.HotelResource;
-import model.Customer;
-import model.IRoom;
-import model.Reservation;
-import model.RoomType;
+import model.*;
 import service.CustomerService;
 import service.ReservationService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class AdminMenu {
     public static void start() {
@@ -77,9 +73,44 @@ public class AdminMenu {
                             start();
                         }
                     }
-//TODO: Add dummy data
-//                case "5":
-//                    AdminResource.a
+                case "5":
+                    // Add list of rooms
+                    List<IRoom> newRoom = new ArrayList<>();
+                    newRoom.add(new Room("1",50d,RoomType.SINGLE));
+                    newRoom.add(new Room("2",70d,RoomType.SINGLE));
+                    newRoom.add(new Room("3",50d,RoomType.SINGLE));
+                    newRoom.add(new Room("4",100d,RoomType.DOUBLE));
+                    newRoom.add(new Room("5",120d,RoomType.DOUBLE));
+                    newRoom.add(new Room("6",25d,RoomType.SINGLE));
+                    newRoom.add(new FreeRoom("7", RoomType.SINGLE));
+                    newRoom.add(new Room("8",199d,RoomType.DOUBLE));
+                    newRoom.add(new FreeRoom("9", RoomType.SINGLE));
+                    AdminResource.addRoom(newRoom);
+
+                    // Add list of customers
+                    String[] customersEmail = {"alex@gmail.com","alin@outlook.com","alin@outlook.com","maria@yahoo.com",
+                            "laura@yahoo.com"};
+                    HotelResource.createACustomer(customersEmail[0], "Alex", "Connor");
+                    HotelResource.createACustomer(customersEmail[1], "Alin", "Daniel");
+                    HotelResource.createACustomer(customersEmail[2], "Daniel", "Albu");
+                    HotelResource.createACustomer(customersEmail[3], "Maria", "Melvi");
+                    HotelResource.createACustomer(customersEmail[4], "Laura", "Alexandrescu");
+
+                    // Create reservations
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    String[] checkIn = {"01/01/2021", "15/01/2021", "01/02/2021", "05/12/2021"};
+                    String[] checkOut = {"06/01/2021", "21/01/2021", "10/02/2021", "19/12/2021"};
+                    for (int i = 0, j = 1; i < 4; i++, j++) {
+                        try{
+                            Date in = sdf.parse(checkIn[i]);
+                            Date out = sdf.parse(checkOut[i]);
+                            HotelResource.bookARoom(customersEmail[i], HotelResource.getRoom(String.valueOf(j)), in, out);
+                        } catch (ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                    System.out.println("Dummy data added!");
+                    start();
                 case "6": MainMenu.start();
                 default:
                     System.out.println("Please select one option from the list.");

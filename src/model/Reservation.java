@@ -1,5 +1,10 @@
 package model;
 
+import service.ReservationService;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Reservation {
@@ -20,17 +25,11 @@ public class Reservation {
     @Override
     public String toString() {
         return "\n- Reservation:\n" + customer.getFirstName() + " " + customer.getLastName() +
-                "\nRoom: " + room.getRoomNumber() + " - " + bedsNumber(room.getRoomType()) +
-                "\nCheckIn Date: "+ checkInDate +"\nCheckOut Date: " + checkOutDate;
+                "\nRoom: " + room.getRoomNumber() + " - " + ReservationService.bedsNumber(room.getRoomType()) +
+                "\nCheckIn Date: "+ dateFormat(checkInDate) +"\nCheckOut Date: " + dateFormat(checkOutDate);
     }
 
-    // Return appropriate description for bed
-    private String bedsNumber(RoomType bed) {
-        return switch (bed) {
-            case DOUBLE -> "Double bed";
-            case SINGLE -> "Single bed";
-        };
-    }
+
 
     public Date getCheckInDate() {
         return checkInDate;
@@ -46,5 +45,12 @@ public class Reservation {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    private String dateFormat(Date dateToFormat) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateToFormat);
+        return sdf.format(calendar.getTime());
     }
 }

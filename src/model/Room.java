@@ -1,5 +1,7 @@
 package model;
 
+import service.ReservationService;
+
 public class Room implements IRoom{
     String roomNumber;
     Double price;
@@ -12,16 +14,10 @@ public class Room implements IRoom{
         this.enumeration = enumeration;
     }
 
-//    public Room(Double price, RoomType roomType) {
-//        this.price = price;
-//        enumeration = roomType;
-//    }
-
-
-
     @Override
     public String toString() {
-        return "Room number: " + roomNumber + "  Price: " + price + "€" + "  Room type: " + enumeration;
+        return "Room number: " + roomNumber + "  Price: " + price + "€" + "  Room type: " +
+                ReservationService.bedsNumber(enumeration);
     }
 
     @Override
@@ -45,10 +41,10 @@ public class Room implements IRoom{
     }
 
 
-    // Method used to sort rooms in asccending order
+    // Method used to sort rooms in ascending order
     @Override
     public int compareTo(IRoom o) {
-        return roomNumber.compareTo(o.getRoomNumber());
+        return this.roomNumber.compareTo(o.getRoomNumber());
     }
 
 
