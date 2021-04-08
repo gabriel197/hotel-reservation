@@ -122,6 +122,18 @@ public class ReservationService {
         return availableRooms;
     }
 
+    public static Collection<IRoom> searchXDaysAfter(int daysAhead, Date checkInDate, Date checkOutDate, boolean searchFreeRooms) {
+        Date checkInDateIncremented, checkOutDateIncremented;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(checkInDate);
+        calendar.add(Calendar.DATE, daysAhead);
+        checkInDateIncremented = calendar.getTime();
+        calendar.setTime(checkOutDate);
+        calendar.add(Calendar.DATE, daysAhead);
+        checkOutDateIncremented = calendar.getTime();
+        return findRooms(checkInDateIncremented, checkOutDateIncremented, searchFreeRooms);
+    }
+
     // Return the rooms reserved by a customer
     public static Collection<Reservation> getCustomersReservation(Customer customer){
         ArrayList<Reservation> customersReservation = new ArrayList<>();

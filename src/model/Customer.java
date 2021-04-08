@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 // Customer class
 public class Customer {
-    private String firstName;
-    private String lastName;
-    private String email;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
 
     // Email pattern
     private static final String regEx = "^(.+)@(.+).(.+)$";
@@ -23,16 +23,6 @@ public class Customer {
             else throw new IllegalArgumentException("Invalid email format, account creation failed.");
     }
 
-    // Check if email have the correct pattern
-//     public static boolean checkEmail(String email) {
-//        boolean isMatching = pattern.matcher(email).matches();
-//        try {
-//            if (!isMatching) throw new IllegalArgumentException("Invalid email format.");
-//        } catch (IllegalArgumentException ex) {
-//            System.out.println(ex.getLocalizedMessage());
-//        }
-//        return isMatching;
-//    }
 
     @Override
     public String toString() {
@@ -45,6 +35,7 @@ public class Customer {
        return firstName.hashCode() * email.hashCode();
     }
 
+    // Return true if two objects have the same hashes
     @Override
     public boolean equals(Object obj) {
         if (getClass() != obj.getClass()) return false;
@@ -56,23 +47,8 @@ public class Customer {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

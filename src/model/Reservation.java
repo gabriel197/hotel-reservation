@@ -3,15 +3,13 @@ package model;
 import java.util.Date;
 
 public class Reservation {
-    private Customer customer;
-    private IRoom room;
-    private Date checkInDate;
-    private Date checkOutDate;
-
-    public Reservation(){}
+    // Class variables can be final because we don't have setter methods neither overloaded constructors
+    private final Customer customer;
+    private final IRoom room;
+    private final Date checkInDate;
+    private final Date checkOutDate;
 
     public Reservation(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
-
         this.customer = customer;
         this.room = room;
         this.checkInDate = checkInDate;

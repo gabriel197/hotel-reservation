@@ -63,7 +63,7 @@ public class MainMenu {
                              }
                              //If customer has an account, allow him to make a reservation
                          } else {
-                             System.out.println("Enter CheckIn Date (dd/MM/yyy) Example: 30/04/2021");
+                             System.out.println("Enter CheckIn Date (dd/MM/yyyy) Example: 30/04/2021");
                              SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                              Collection<IRoom> availableRooms;
                              Date dateIn = null, dateOut = null;
@@ -75,7 +75,7 @@ public class MainMenu {
                                      System.out.println("Invalid date format");
                                  }
                              }
-                             System.out.println("Enter CheckOut Date (dd/MM/yyy) Example: 03/05/2021");
+                             System.out.println("Enter CheckOut Date (dd/MM/yyyy) Example: 03/05/2021");
 
                              while (dateOut==null) {
                                  try{
@@ -99,8 +99,34 @@ public class MainMenu {
                              }
 
                              availableRooms = HotelResource.findARoom(dateIn, dateOut, freeRooms);
+
+                             // This block of code check for others rooms in a timeframe incremented by user if their
+                             // current reservation period has no available rooms
+                             if (availableRooms.size() == 0) {
+                                 System.out.println("No available rooms found. Would you like to search after");
+                                 System.out.println("your current reservation period for available room? (Y/N)");
+                                 scannedToken = scanner.next().toLowerCase(Locale.ROOT);
+                                 while (!(scannedToken.equals("y") || scannedToken.equals("n")))
+                                     System.out.println("Please enter Y (YES) or N (NO)");
+                                 if(scannedToken.equals("n")) start();
+                                 System.out.println("How many days out?");
+                                 int days = 0;
+                                 while (days == 0) {
+                                     try {
+                                         scannedToken = scanner.next();
+                                         days = Integer.parseInt(scannedToken);
+                                     } catch (NumberFormatException ex) {
+                                         System.out.println("Enter only digits");
+                                     }
+                                 }
+                                 availableRooms = HotelResource.searchSomeDaysAfter(days, dateIn, dateOut, freeRooms);
+                             }
                              for (IRoom room : availableRooms) {
                                  System.out.println(room);
+                             }
+                             if (availableRooms.size() == 0) {
+                                 System.out.println("Sorry, no rooms available in this period either");
+                                 start();
                              }
                              System.out.println("Would you like to book a room? (Y/N)");
                              scannedToken = scanner.next().toLowerCase(Locale.ROOT);
@@ -109,6 +135,7 @@ public class MainMenu {
                                      System.out.println("What room number you will like to reserve?");
                                      roomNumber = scanner.next();
                                      if(HotelResource.getRoom(roomNumber) != null)
+                                         //TODO: Double message error: Room non-existent
                                      System.out.println(HotelResource.bookARoom(email, HotelResource.getRoom(roomNumber), dateIn, dateOut));
                                      start();
                                  case "n":

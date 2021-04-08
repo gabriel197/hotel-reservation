@@ -6,7 +6,6 @@ import model.Reservation;
 import service.CustomerService;
 import service.ReservationService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -32,6 +31,10 @@ public class HotelResource {
         return ReservationService.getCustomersReservation(CustomerService.getCustomer(customerEmail));
 
 
+    }
+
+    public static Collection<IRoom> searchSomeDaysAfter(int daysAfter, Date checkInDate, Date checkOutDate, boolean freeRoom) {
+       return ReservationService.searchXDaysAfter(daysAfter, checkInDate, checkOutDate, freeRoom);
     }
 
     // TODO: Allow the users to input how many days out the room recommendation should

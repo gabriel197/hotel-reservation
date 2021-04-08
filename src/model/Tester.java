@@ -74,6 +74,7 @@ public class Tester {
 //        IRoom rom = new Room("a", 2d, RoomType.SINGLE);
 //        System.out.println(rom.getClass());
 //        System.out.println(FreeRoom.class);
+
         }
 
 
