@@ -1,6 +1,5 @@
 package api;
 
-import exceptions.RoomNotFoundException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -38,8 +37,6 @@ public class HotelResource {
        return ReservationService.searchXDaysAfter(daysAfter, checkInDate, checkOutDate, freeRoom);
     }
 
-    // TODO: Allow the users to input how many days out the room recommendation should
-    //  search if there are no available rooms.
     public static Collection<IRoom> findARoom(Date checkIn, Date checkOut, boolean freeRooms){
         return ReservationService.findRooms(checkIn, checkOut, freeRooms);
     }

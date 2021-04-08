@@ -65,7 +65,6 @@ public class AdminMenu {
                             default -> null;
                         };
                         rooms.add(AdminResource.createRoom(roomNumber, price, roomBed));
-                        //TODO: add proper check for misspelling
                         System.out.println("Would you like to add another room? (Y/N)");
                         scannedToken = scanner.next().toLowerCase(Locale.ROOT);
                         if (scannedToken.equals("n")) {
@@ -75,6 +74,7 @@ public class AdminMenu {
                     }
                 case "5":
                     // Add list of rooms
+                    System.out.println("\nAdd rooms...");
                     List<IRoom> newRoom = new ArrayList<>();
                     newRoom.add(new Room("1",50d,RoomType.SINGLE));
                     newRoom.add(new Room("2",70d,RoomType.SINGLE));
@@ -87,8 +87,10 @@ public class AdminMenu {
                     newRoom.add(new FreeRoom("9", RoomType.SINGLE));
                     AdminResource.addRoom(newRoom);
 
+
                     // Add list of customers
-                    String[] customersEmail = {"alex@gmail.com","alin@outlook.com","alin@outlook.com","maria@yahoo.com",
+                    System.out.println("Add customers...");
+                    String[] customersEmail = {"alex@gmail.com","alin@outlook.com","daniel@outlook.com","maria@yahoo.com",
                             "laura@yahoo.com"};
                     HotelResource.createACustomer(customersEmail[0], "Alex", "Connor");
                     HotelResource.createACustomer(customersEmail[1], "Alin", "Daniel");
@@ -100,6 +102,7 @@ public class AdminMenu {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                     String[] checkIn = {"01/01/2021", "15/01/2021", "01/02/2021", "05/12/2021"};
                     String[] checkOut = {"06/01/2021", "21/01/2021", "10/02/2021", "19/12/2021"};
+                    System.out.println("Create reservations...");
                     for (int i = 0, j = 1; i < 4; i++, j++) {
                         try{
                             Date in = sdf.parse(checkIn[i]);
@@ -109,7 +112,7 @@ public class AdminMenu {
                             ex.printStackTrace();
                         }
                     }
-                    System.out.println("Dummy data added!");
+                    System.out.println("\nTest data added!");
                     start();
                 case "6": MainMenu.start();
                 default:
@@ -120,4 +123,3 @@ public class AdminMenu {
 
         }
     }
-

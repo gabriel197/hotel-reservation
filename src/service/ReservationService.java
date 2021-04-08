@@ -1,8 +1,6 @@
 package service;
 
-import exceptions.RoomNotFoundException;
 import model.*;
-
 import java.util.*;
 
 public class ReservationService {
@@ -28,12 +26,6 @@ public class ReservationService {
     }
 
     public static Collection<IRoom> getAllRooms() {
-//        List<IRoom> allRooms = new ArrayList<>(roomList);
-//        for (Reservation reservedRoom :
-//                reservations) {
-//            allRooms.add(reservedRoom.getRoom());
-//        }
-//        // Sort by room number in ascending order
         Collections.sort(roomList);
         return roomList;
     }

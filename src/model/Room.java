@@ -44,8 +44,8 @@ public class Room implements IRoom{
     // Method used to sort rooms in ascending order
     @Override
     public int compareTo(IRoom o) {
-        return this.roomNumber.compareTo(o.getRoomNumber());
+        Integer thisInteger = Integer.parseInt(roomNumber);
+        Integer integerObj = Integer.parseInt(o.getRoomNumber());
+        return thisInteger.compareTo(integerObj);
     }
-
-
 }

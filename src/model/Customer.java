@@ -38,6 +38,7 @@ public class Customer {
     // Return true if two objects have the same hashes
     @Override
     public boolean equals(Object obj) {
+        if(obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         Customer customer = (Customer) obj;
         return customer.hashCode() == this.hashCode();

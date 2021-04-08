@@ -1,11 +1,9 @@
 package ui;
 
 import api.HotelResource;
-import model.Customer;
+
 import model.IRoom;
 import model.Reservation;
-import service.CustomerService;
-import service.ReservationService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,24 +41,24 @@ public class MainMenu {
                          if(HotelResource.getCustomer(email)== null) {
                              System.out.println("Would you like to create an account in order to make a reservation? (Y/N)");
                              scannedToken = scanner.next().toLowerCase(Locale.ROOT);
-                             switch (scannedToken) {
-                                 case "y":
+                             if (!(scannedToken.equals("y") || scannedToken.equals("n")))
+                                 System.out.println("Enter Y (yes) or N (no).");
+                                 switch (scannedToken) {
+                                     case "y":
 
-                                     System.out.println("Enter your email. Example: yourname@domain.com");
-                                     email = scanner.next();
-//                                     while (!CustomerService.validEmail(email)) {
-//                                         System.out.println("Please enter a valid email:");
-//                                         email = scanner.next();
-//                                     }
-                                     System.out.println("First Name:");
-                                     first = scanner.next();
-                                     System.out.println("Last Name");
-                                     last = scanner.next();
-                                     HotelResource.createACustomer(email,first,last);
-                                     start();
+                                         System.out.println("Enter your email. Example: yourname@domain.com");
+                                         email = scanner.next();
+                                         System.out.println("First Name:");
+                                         first = scanner.next();
+                                         System.out.println("Last Name");
+                                         last = scanner.next();
+                                         HotelResource.createACustomer(email, first, last);
+                                         start();
 
-                                 case "n": start();
-                             }
+                                     case "n":
+                                         start();
+                                 }
+
                              //If customer has an account, allow him to make a reservation
                          } else {
                              System.out.println("Enter CheckIn Date (dd/MM/yyyy) Example: 30/04/2021");
@@ -103,8 +101,8 @@ public class MainMenu {
                              // This block of code check for others rooms in a timeframe incremented by user if their
                              // current reservation period has no available rooms
                              if (availableRooms.size() == 0) {
-                                 System.out.println("No available rooms found. Would you like to search after");
-                                 System.out.println("your current reservation period for available room? (Y/N)");
+                                 System.out.println("No available rooms found. Would you like to search ahead");
+                                 System.out.println("of current reservation period for available room? (Y/N)");
                                  scannedToken = scanner.next().toLowerCase(Locale.ROOT);
                                  while (!(scannedToken.equals("y") || scannedToken.equals("n")))
                                      System.out.println("Please enter Y (YES) or N (NO)");
@@ -135,7 +133,6 @@ public class MainMenu {
                                      System.out.println("What room number you will like to reserve?");
                                      roomNumber = scanner.next();
                                      if(HotelResource.getRoom(roomNumber) != null)
-                                         //TODO: Double message error: Room non-existent
                                      System.out.println(HotelResource.bookARoom(email, HotelResource.getRoom(roomNumber), dateIn, dateOut));
                                      start();
                                  case "n":
