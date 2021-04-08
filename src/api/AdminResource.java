@@ -2,33 +2,36 @@ package api;
 
 import model.*;
 import service.CustomerService;
-import service.ReservationService;
-
 import java.util.Collection;
 import java.util.List;
 
+import static service.CustomerService.customerService;
+import static service.ReservationService.reservationService;
+
 public class AdminResource {
 
-    public static Customer getCustomer(String email){
-        return CustomerService.getCustomer(email);
+    public static final AdminResource adminResource = new AdminResource();
+
+    public Customer getCustomer(String email){
+        return customerService.getCustomer(email);
     }
 
-    public static IRoom createRoom(String roomNumber, String price, RoomType roomType) throws NumberFormatException{
-        return ReservationService.createARoom(roomNumber, price, roomType);
+    public IRoom createRoom(String roomNumber, String price, RoomType roomType) throws NumberFormatException{
+        return reservationService.createARoom(roomNumber, price, roomType);
     }
-    public static void addRoom(List<IRoom> rooms){
+    public void addRoom(List<IRoom> rooms){
         for (IRoom room : rooms) {
-            ReservationService.addRoom(room);
+            reservationService.addRoom(room);
         }
     }
-    public static Collection<IRoom> getAllRooms(){
-        return ReservationService.getAllRooms();
+    public Collection<IRoom> getAllRooms(){
+        return reservationService.getAllRooms();
     }
 
-    public static Collection<Customer> getAllCustomers(){
-        return CustomerService.getAllCustomers();
+    public Collection<Customer> getAllCustomers(){
+        return customerService.getAllCustomers();
     }
-    public static void displayAllReservations(){
-        ReservationService.printAllReservations();
+    public void displayAllReservations(){
+        reservationService.printAllReservations();
     }
 }

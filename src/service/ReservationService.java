@@ -4,20 +4,21 @@ import model.*;
 import java.util.*;
 
 public class ReservationService {
-
+    // Singleton object for calling this class methods without the need to mark all of them static
+    public static final ReservationService reservationService = new ReservationService();
     // Store a list of rooms in a collection
-    private static List<IRoom> roomList = new ArrayList<>();
+    private List<IRoom> roomList = new ArrayList<>();
 
     // Store rooms with their checkIn and out dates
-    private static ArrayList<Reservation> reservations = new ArrayList<>();
+    private  ArrayList<Reservation> reservations = new ArrayList<>();
     
-    public static void addRoom(IRoom room){
+    public  void addRoom(IRoom room){
         roomList.add(room);
         Collections.sort(roomList);
     }
 
     // Get a room from Collections
-    public static IRoom getARoom(String roomId) {
+    public IRoom getARoom(String roomId) {
         for (IRoom room : roomList) {
                 if (room.getRoomNumber().equals(roomId)) return room;
         }
@@ -25,13 +26,13 @@ public class ReservationService {
         return null;
     }
 
-    public static Collection<IRoom> getAllRooms() {
+    public  Collection<IRoom> getAllRooms() {
         Collections.sort(roomList);
         return roomList;
     }
 
 
-    public static IRoom createARoom(String roomNumber, String roomPrice, RoomType roomType) throws NumberFormatException {
+    public IRoom createARoom(String roomNumber, String roomPrice, RoomType roomType) throws NumberFormatException {
 
         double doublePrice = Double.parseDouble(roomPrice);
 
@@ -39,15 +40,14 @@ public class ReservationService {
     }
 
 
-    public static Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
+    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
         Reservation reservedRoom = new Reservation(customer, room, checkInDate, checkOutDate);
         reservations.add(reservedRoom);
-//        bookedRooms.put(customer.getEmail(), reservedRoom);
         return reservedRoom;
     }
 
     // Find rooms that are not reserved & show only paid || only free rooms list
-    public static Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate, boolean searchFreeRooms) {
+    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate, boolean searchFreeRooms) {
         Set<IRoom> freeRooms = new HashSet<>();
 
         // Store in set so it not allow duplicates
@@ -87,7 +87,7 @@ public class ReservationService {
         return sortableList;
     }
 
-    public static Collection<IRoom> searchXDaysAfter(int daysAhead, Date checkInDate, Date checkOutDate, boolean searchFreeRooms) {
+    public Collection<IRoom> searchXDaysAfter(int daysAhead, Date checkInDate, Date checkOutDate, boolean searchFreeRooms) {
         Date checkInDateIncremented, checkOutDateIncremented;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(checkInDate);
@@ -100,7 +100,7 @@ public class ReservationService {
     }
 
     // Return the rooms reserved by a customer
-    public static Collection<Reservation> getCustomersReservation(Customer customer){
+    public Collection<Reservation> getCustomersReservation(Customer customer){
         ArrayList<Reservation> customersReservation = new ArrayList<>();
         for (Reservation reserved :
                 reservations) {
@@ -110,13 +110,13 @@ public class ReservationService {
     }
 
     // Print to console all reservations
-    public static void printAllReservations(){
+    public void printAllReservations(){
         Iterator<Reservation> iterator = reservations.iterator();
         while (iterator.hasNext()) System.out.println(iterator.next());
     }
 
     // Return appropriate description for bed
-    public static String bedsNumber(RoomType bed) {
+    public String bedsNumber(RoomType bed) {
         return switch (bed) {
             case DOUBLE -> "Double bed";
             case SINGLE -> "Single bed";

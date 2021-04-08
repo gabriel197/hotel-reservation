@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static api.HotelResource.hotelResource;
+
 public class MainMenu {
     public static void start() {
         System.out.println("\n Welcome to the Hotel Reservation Application!");
@@ -38,7 +40,7 @@ public class MainMenu {
 
                         email = scanner.next();
                         // If no email found, create a customer account
-                         if(HotelResource.getCustomer(email)== null) {
+                         if(hotelResource.getCustomer(email)== null) {
                              System.out.println("Would you like to create an account in order to make a reservation? (Y/N)");
                              scannedToken = scanner.next().toLowerCase(Locale.ROOT);
                              if (!(scannedToken.equals("y") || scannedToken.equals("n")))
@@ -52,11 +54,12 @@ public class MainMenu {
                                          first = scanner.next();
                                          System.out.println("Last Name");
                                          last = scanner.next();
-                                         HotelResource.createACustomer(email, first, last);
+                                         hotelResource.createACustomer(email, first, last);
                                          start();
 
                                      case "n":
                                          start();
+
                                  }
 
                              //If customer has an account, allow him to make a reservation
@@ -96,7 +99,7 @@ public class MainMenu {
                                  default -> freeRooms = false;
                              }
 
-                             availableRooms = HotelResource.findARoom(dateIn, dateOut, freeRooms);
+                             availableRooms = hotelResource.findARoom(dateIn, dateOut, freeRooms);
 
                              // This block of code check for others rooms in a timeframe incremented by user if their
                              // current reservation period has no available rooms
@@ -117,7 +120,7 @@ public class MainMenu {
                                          System.out.println("Enter only digits");
                                      }
                                  }
-                                 availableRooms = HotelResource.searchSomeDaysAfter(days, dateIn, dateOut, freeRooms);
+                                 availableRooms = hotelResource.searchSomeDaysAfter(days, dateIn, dateOut, freeRooms);
                              }
                              for (IRoom room : availableRooms) {
                                  System.out.println(room);
@@ -125,6 +128,7 @@ public class MainMenu {
                              if (availableRooms.size() == 0) {
                                  System.out.println("Sorry, no rooms available in this period either");
                                  start();
+                                 break;
                              }
                              System.out.println("Would you like to book a room? (Y/N)");
                              scannedToken = scanner.next().toLowerCase(Locale.ROOT);
@@ -132,24 +136,27 @@ public class MainMenu {
                                  case "y":
                                      System.out.println("What room number you will like to reserve?");
                                      roomNumber = scanner.next();
-                                     if(HotelResource.getRoom(roomNumber) != null)
-                                     System.out.println(HotelResource.bookARoom(email, HotelResource.getRoom(roomNumber), dateIn, dateOut));
+                                     if(hotelResource.getRoom(roomNumber) != null)
+                                     System.out.println(hotelResource.bookARoom(email, hotelResource.getRoom(roomNumber), dateIn, dateOut));
                                      start();
                                  case "n":
                                      start();
+                                     break;
                              }
                          }
                     } else if (scannedToken.equals("n")) {
                         System.out.println("Create an account form option 3. in Main Menu in order to continue.");
                         start();
                     }
+                    break;
                 case "2":
                     System.out.println("Enter your email address:");
                     scannedToken = scanner.next();
-                    for (Reservation reservation : HotelResource.getACustomerReservations(scannedToken)) {
+                    for (Reservation reservation : hotelResource.getACustomerReservations(scannedToken)) {
                         System.out.println(reservation);
                     }
                     start();
+                    break;
 
 
                 case "3":
@@ -159,16 +166,18 @@ public class MainMenu {
                     first = scanner.next();
                     System.out.println("Last Name:");
                     last = scanner.next();
-                    HotelResource.createACustomer(email,first,last);
+                    hotelResource.createACustomer(email,first,last);
                     start();
+                    break;
 
                 case "4":
                     AdminMenu.start();
                     break;
-                case "5": scanner.close();
+                case "5": break;
                 default:
                     System.out.println("Please select one option from the list.");
                     start();
+                    break;
             }
         }
     }

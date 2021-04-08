@@ -1,6 +1,6 @@
 package model;
 
-import service.ReservationService;
+import static service.ReservationService.reservationService;
 
 public class Room implements IRoom{
     String roomNumber;
@@ -17,7 +17,7 @@ public class Room implements IRoom{
     @Override
     public String toString() {
         return "Room number: " + roomNumber + "  Price: " + price + "€" + "  Room type: " +
-                ReservationService.bedsNumber(enumeration);
+                reservationService.bedsNumber(enumeration);
     }
 
     @Override

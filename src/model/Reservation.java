@@ -1,9 +1,10 @@
 package model;
 
-import service.ReservationService;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import static service.ReservationService.reservationService;
 
 public class Reservation {
     // Class variables can be final because we don't have setter methods neither overloaded constructors
@@ -23,7 +24,7 @@ public class Reservation {
     @Override
     public String toString() {
         return "\n- Reservation:\n" + customer.getFirstName() + " " + customer.getLastName() +
-                "\nRoom: " + room.getRoomNumber() + " - " + ReservationService.bedsNumber(room.getRoomType()) +
+                "\nRoom: " + room.getRoomNumber() + " - " + reservationService.bedsNumber(room.getRoomType()) +
                 "\nCheckIn Date: "+ dateFormat(checkInDate) +"\nCheckOut Date: " + dateFormat(checkOutDate);
     }
 

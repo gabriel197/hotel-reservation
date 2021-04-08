@@ -1,6 +1,6 @@
 package model;
 
-import service.ReservationService;
+import static service.ReservationService.reservationService;
 
 // A free room with price = 0;
 public class FreeRoom extends Room{
@@ -11,7 +11,7 @@ public class FreeRoom extends Room{
 
     @Override
     public String toString() {
-        return "Free Room - " + "Number: " + roomNumber + " Price: " + price + "€" + "  Room type: " + ReservationService.bedsNumber(enumeration);
+        return "Free Room - " + "Number: " + roomNumber + " Price: " + price + "€" + "  Room type: " + reservationService.bedsNumber(enumeration);
     }
 
     @Override

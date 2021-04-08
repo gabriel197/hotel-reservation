@@ -6,11 +6,14 @@ import java.util.*;
 
 
 public class CustomerService {
+    // Singleton object for calling this class methods without the need to mark all of them static
+    public static final CustomerService customerService = new CustomerService();
+
 
     // Store the customers in a collection
-    static Map<String, Customer> customerMap = new HashMap<>();
+    private Map<String, Customer> customerMap = new HashMap<>();
 
-    public static void addCustomer(String email, String firstName, String lastName){
+    public void addCustomer(String email, String firstName, String lastName){
         try {
             customerMap.put(email, new Customer(firstName, lastName, email));
         } catch (IllegalArgumentException ex) {
@@ -18,7 +21,7 @@ public class CustomerService {
         }
     }
 
-    public static Customer getCustomer(String customerEmail){
+    public Customer getCustomer(String customerEmail){
         try {
             if (!customerMap.containsKey(customerEmail)) throw new CustomerNotFoundException("Customer not found.");
         } catch (CustomerNotFoundException ex) {
@@ -28,7 +31,7 @@ public class CustomerService {
     }
 
 
-    public  static Collection<Customer> getAllCustomers(){
+    public Collection<Customer> getAllCustomers(){
         return customerMap.values();
     }
 

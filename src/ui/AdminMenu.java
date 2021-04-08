@@ -1,14 +1,15 @@
 package ui;
 
-import api.AdminResource;
+
 import api.HotelResource;
 import model.*;
-import service.CustomerService;
-import service.ReservationService;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static api.AdminResource.adminResource;
+import static api.HotelResource.hotelResource;
+import static service.ReservationService.reservationService;
 
 public class AdminMenu {
     public static void start() {
@@ -29,25 +30,28 @@ public class AdminMenu {
             String scannedToken = scanner.next();
             switch (scannedToken) {
                 case "1":
-                    for (Customer customer : CustomerService.getAllCustomers()) {
+                    for (Customer customer : adminResource.getAllCustomers()) {
                         System.out.println(customer);
                     }
                     start();
+                    break;
                 case "2":
                     for (IRoom room :
-                            ReservationService.getAllRooms()) {
+                            reservationService.getAllRooms()) {
                         System.out.println(room);
                     }
                     start();
+                    break;
 
                 case "3":
-                    AdminResource.displayAllReservations();
+                    adminResource.displayAllReservations();
                     start();
+                    break;
 
                 case "4":
                     boolean addOneMoreRoom = true;
                     List<IRoom> rooms = new ArrayList<>();
-                    while (true) {
+                    while (addOneMoreRoom) {
                         String price, roomNumber, roomType;
                         System.out.println("Enter room number:");
                         roomNumber = scanner.next();
@@ -64,14 +68,16 @@ public class AdminMenu {
                             case "2" -> RoomType.DOUBLE;
                             default -> null;
                         };
-                        rooms.add(AdminResource.createRoom(roomNumber, price, roomBed));
+                        rooms.add(adminResource.createRoom(roomNumber, price, roomBed));
                         System.out.println("Would you like to add another room? (Y/N)");
                         scannedToken = scanner.next().toLowerCase(Locale.ROOT);
                         if (scannedToken.equals("n")) {
-                            AdminResource.addRoom(rooms);
+                            adminResource.addRoom(rooms);
+                            addOneMoreRoom = false;
                             start();
                         }
                     }
+                    break;
                 case "5":
                     // Add list of rooms
                     System.out.println("\nAdd rooms...");
@@ -85,18 +91,18 @@ public class AdminMenu {
                     newRoom.add(new FreeRoom("7", RoomType.SINGLE));
                     newRoom.add(new Room("8",199d,RoomType.DOUBLE));
                     newRoom.add(new FreeRoom("9", RoomType.SINGLE));
-                    AdminResource.addRoom(newRoom);
+                    adminResource.addRoom(newRoom);
 
 
                     // Add list of customers
                     System.out.println("Add customers...");
                     String[] customersEmail = {"alex@gmail.com","alin@outlook.com","daniel@outlook.com","maria@yahoo.com",
                             "laura@yahoo.com"};
-                    HotelResource.createACustomer(customersEmail[0], "Alex", "Connor");
-                    HotelResource.createACustomer(customersEmail[1], "Alin", "Daniel");
-                    HotelResource.createACustomer(customersEmail[2], "Daniel", "Albu");
-                    HotelResource.createACustomer(customersEmail[3], "Maria", "Melvi");
-                    HotelResource.createACustomer(customersEmail[4], "Laura", "Alexandrescu");
+                    hotelResource.createACustomer(customersEmail[0], "Alex", "Connor");
+                    hotelResource.createACustomer(customersEmail[1], "Alin", "Daniel");
+                    hotelResource.createACustomer(customersEmail[2], "Daniel", "Albu");
+                    hotelResource.createACustomer(customersEmail[3], "Maria", "Melvi");
+                    hotelResource.createACustomer(customersEmail[4], "Laura", "Alexandrescu");
 
                     // Create reservations
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -107,17 +113,22 @@ public class AdminMenu {
                         try{
                             Date in = sdf.parse(checkIn[i]);
                             Date out = sdf.parse(checkOut[i]);
-                            HotelResource.bookARoom(customersEmail[i], HotelResource.getRoom(String.valueOf(j)), in, out);
+                            hotelResource.bookARoom(customersEmail[i], hotelResource.getRoom(String.valueOf(j)), in, out);
                         } catch (ParseException ex) {
                             ex.printStackTrace();
                         }
                     }
                     System.out.println("\nTest data added!");
                     start();
-                case "6": MainMenu.start();
+                    break;
+                case "6":
+                    MainMenu.start();
+                    break;
+
                 default:
                     System.out.println("Please select one option from the list.");
                     start();
+                    break;
                     }
             }
 
