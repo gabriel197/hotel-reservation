@@ -27,7 +27,7 @@ public class MainMenu {
             String scannedToken = scanner.next();
             String first, last, email, roomNumber;
             switch (scannedToken) {
-                case "1":
+                case "1" -> {
                     System.out.println("Do you have an account with us? (Y/N)");
                     scannedToken = scanner.next().toLowerCase(Locale.ROOT);
                     while (!(scannedToken.equals("y") || scannedToken.equals("n"))) {
@@ -148,36 +148,35 @@ public class MainMenu {
                         System.out.println("Create an account form option 3. in Main Menu in order to continue.");
                         start();
                     }
-                    break;
-                case "2":
+                    }
+                case "2" -> {
                     System.out.println("Enter your email address:");
                     scannedToken = scanner.next();
                     for (Reservation reservation : hotelResource.getACustomerReservations(scannedToken)) {
                         System.out.println(reservation);
                     }
                     start();
-                    break;
+                }
 
 
-                case "3":
+                case "3" -> {
                     System.out.println("Enter your email. Example: yourname@domain.com");
                     email = scanner.next();
                     System.out.println("First Name:");
                     first = scanner.next();
                     System.out.println("Last Name:");
                     last = scanner.next();
-                    hotelResource.createACustomer(email,first,last);
+                    hotelResource.createACustomer(email, first, last);
                     start();
-                    break;
+                }
 
-                case "4":
-                    AdminMenu.start();
-                    break;
-                case "5": break;
-                default:
+                case "4" -> AdminMenu.start();
+
+                case "5" -> {break;}
+                default -> {
                     System.out.println("Please select one option from the list.");
                     start();
-                    break;
+                }
             }
         }
     }

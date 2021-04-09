@@ -1,7 +1,5 @@
 package ui;
 
-
-import api.HotelResource;
 import model.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +7,7 @@ import java.util.*;
 
 import static api.AdminResource.adminResource;
 import static api.HotelResource.hotelResource;
-import static service.ReservationService.reservationService;
+
 
 public class AdminMenu {
     public static void start() {
@@ -28,27 +26,28 @@ public class AdminMenu {
 
 
             String scannedToken = scanner.next();
+            // Add list of rooms
+            // Add list of customers
+            // Create reservations
             switch (scannedToken) {
-                case "1":
+                case "1" -> {
                     for (Customer customer : adminResource.getAllCustomers()) {
                         System.out.println(customer);
                     }
                     start();
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     for (IRoom room :
-                            reservationService.getAllRooms()) {
+                            adminResource.getAllRooms()) {
                         System.out.println(room);
                     }
                     start();
-                    break;
-
-                case "3":
+                }
+                case "3" -> {
                     adminResource.displayAllReservations();
                     start();
-                    break;
-
-                case "4":
+                }
+                case "4" -> {
                     boolean addOneMoreRoom = true;
                     List<IRoom> rooms = new ArrayList<>();
                     while (addOneMoreRoom) {
@@ -77,40 +76,34 @@ public class AdminMenu {
                             start();
                         }
                     }
-                    break;
-                case "5":
-                    // Add list of rooms
+                }
+                case "5" -> {
                     System.out.println("\nAdd rooms...");
                     List<IRoom> newRoom = new ArrayList<>();
-                    newRoom.add(new Room("1",50d,RoomType.SINGLE));
-                    newRoom.add(new Room("2",70d,RoomType.SINGLE));
-                    newRoom.add(new Room("3",50d,RoomType.SINGLE));
-                    newRoom.add(new Room("4",100d,RoomType.DOUBLE));
-                    newRoom.add(new Room("5",120d,RoomType.DOUBLE));
-                    newRoom.add(new Room("6",25d,RoomType.SINGLE));
+                    newRoom.add(new Room("1", 50d, RoomType.SINGLE));
+                    newRoom.add(new Room("2", 70d, RoomType.SINGLE));
+                    newRoom.add(new Room("3", 50d, RoomType.SINGLE));
+                    newRoom.add(new Room("4", 100d, RoomType.DOUBLE));
+                    newRoom.add(new Room("5", 120d, RoomType.DOUBLE));
+                    newRoom.add(new Room("6", 25d, RoomType.SINGLE));
                     newRoom.add(new FreeRoom("7", RoomType.SINGLE));
-                    newRoom.add(new Room("8",199d,RoomType.DOUBLE));
+                    newRoom.add(new Room("8", 199d, RoomType.DOUBLE));
                     newRoom.add(new FreeRoom("9", RoomType.SINGLE));
                     adminResource.addRoom(newRoom);
-
-
-                    // Add list of customers
                     System.out.println("Add customers...");
-                    String[] customersEmail = {"alex@gmail.com","alin@outlook.com","daniel@outlook.com","maria@yahoo.com",
+                    String[] customersEmail = {"alex@gmail.com", "alin@outlook.com", "daniel@outlook.com", "maria@yahoo.com",
                             "laura@yahoo.com"};
                     hotelResource.createACustomer(customersEmail[0], "Alex", "Connor");
                     hotelResource.createACustomer(customersEmail[1], "Alin", "Daniel");
                     hotelResource.createACustomer(customersEmail[2], "Daniel", "Albu");
                     hotelResource.createACustomer(customersEmail[3], "Maria", "Melvi");
                     hotelResource.createACustomer(customersEmail[4], "Laura", "Alexandrescu");
-
-                    // Create reservations
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                     String[] checkIn = {"01/01/2021", "15/01/2021", "01/02/2021", "05/12/2021"};
                     String[] checkOut = {"06/01/2021", "21/01/2021", "10/02/2021", "19/12/2021"};
                     System.out.println("Create reservations...");
                     for (int i = 0, j = 1; i < 4; i++, j++) {
-                        try{
+                        try {
                             Date in = sdf.parse(checkIn[i]);
                             Date out = sdf.parse(checkOut[i]);
                             hotelResource.bookARoom(customersEmail[i], hotelResource.getRoom(String.valueOf(j)), in, out);
@@ -120,16 +113,13 @@ public class AdminMenu {
                     }
                     System.out.println("\nTest data added!");
                     start();
-                    break;
-                case "6":
-                    MainMenu.start();
-                    break;
-
-                default:
+                }
+                case "6" -> MainMenu.start();
+                default -> {
                     System.out.println("Please select one option from the list.");
                     start();
-                    break;
-                    }
+                }
+            }
             }
 
         }
